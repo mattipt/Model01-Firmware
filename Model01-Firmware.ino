@@ -65,9 +65,11 @@
 // Support for USB quirks, like changing the key state report protocol
 #include "Kaleidoscope-USB-Quirks.h"
 
+//#include "Kaleidoscope-ModifierLayers.h"
+
 /** This 'enum' is a list of all the macros used by the Model 01's firmware
   * The names aren't particularly important. What is important is that each
-  * is unique.
+  * is unique.k
   *
   * These are the names of your macros. They'll be used in two places.
   * The first is in your keymap definitions. There, you'll use the syntax
@@ -79,7 +81,8 @@
   */
 
 enum { MACRO_VERSION_INFO,
-       MACRO_ANY
+       MACRO_ANY,
+       MACRO_CARET
      };
 
 
@@ -126,7 +129,7 @@ enum { MACRO_VERSION_INFO,
   *
   */
 
-enum { PRIMARY, NUMPAD, FUNCTION }; // layers
+enum { PRIMARY, NUMPAD, FUNCTION, SHIFT }; // layers
 
 
 // *INDENT-OFF*
@@ -135,17 +138,17 @@ KEYMAPS(
 
   [PRIMARY] = KEYMAP_STACKED
   (___,          Key_1, Key_2, Key_3, Key_4, Key_5, Key_Escape,
-   Key_Backtick, Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
+   LSHIFT(Key_Equals), Key_Q, Key_W, Key_E, Key_R, Key_T, Key_Tab,
    Key_PageUp,   Key_A, Key_S, Key_D, Key_F, Key_G,
    Key_PageDown, Key_Z, Key_X, Key_C, Key_V, Key_B, Key_LeftAlt,
-   Key_LeftControl, Key_Space, Key_LeftGui, Key_LeftShift,
+   Key_LeftControl, Key_Space, Key_LeftGui, ShiftToLayer(SHIFT),
    ShiftToLayer(FUNCTION),
 
-   M(MACRO_ANY),  Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
-   Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         Key_Equals,
+   Key_NonUsPound,  Key_6, Key_7, Key_8,     Key_9,         Key_0,         LockLayer(NUMPAD),
+   Key_Enter,     Key_Y, Key_U, Key_I,     Key_O,         Key_P,         LSHIFT(Key_0),
                   Key_H, Key_J, Key_K,     Key_L,         Key_Semicolon, Key_Quote,
-   Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    Key_Slash,     Key_Minus,
-   Key_RightShift, Key_Backspace, Key_Spacebar, Key_RightControl,
+   Key_RightAlt,  Key_N, Key_M, Key_Comma, Key_Period,    LSHIFT(Key_7),     Key_Slash,
+   ShiftToLayer(SHIFT), Key_Backspace, Key_Spacebar, Key_RightControl,
    ShiftToLayer(FUNCTION)),
 
   [NUMPAD] =  KEYMAP_STACKED
@@ -171,12 +174,28 @@ KEYMAPS(
    ___, Key_Delete, ___, ___,
    ___,
 
+
    Consumer_ScanPreviousTrack, Key_F6,                 Key_F7,                   Key_F8,                   Key_F9,          Key_F10,          Key_F11,
-   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, Key_LeftCurlyBracket,     Key_RightCurlyBracket,    Key_LeftBracket, Key_RightBracket, Key_F12,
+   Consumer_PlaySlashPause,    Consumer_ScanNextTrack, RALT(Key_7),     RALT(Key_0),    RALT(Key_8), RALT(Key_9), Key_F12,
                                Key_LeftArrow,          Key_DownArrow,            Key_UpArrow,              Key_RightArrow,  ___,              ___,
-   Key_PcApplication,          Consumer_Mute,          Consumer_VolumeDecrement, Consumer_VolumeIncrement, ___,             Key_Backslash,    Key_Pipe,
+   Key_PcApplication,          Consumer_Mute,          ___, Key_NonUsBackslashAndPipe, LSHIFT(Key_NonUsBackslashAndPipe),   RALT(Key_Minus),    RALT(Key_NonUsBackslashAndPipe),
    ___, ___, Key_Enter, ___,
-   ___)
+   ___),
+
+  [SHIFT] = KEYMAP_STACKED
+  (___,          LSHIFT(Key_1), RALT(Key_2), LSHIFT(Key_3), RALT(Key_4), LSHIFT(Key_5), Key_Escape,
+   RALT(Key_RightBracket), LSHIFT(Key_Q), LSHIFT(Key_W), LSHIFT(Key_E), LSHIFT(Key_R), LSHIFT(Key_T), Key_Tab,
+   Key_PageUp,   LSHIFT(Key_A), LSHIFT(Key_S), LSHIFT(Key_D), LSHIFT(Key_F), LSHIFT(Key_G),
+   Key_PageDown, LSHIFT(Key_Z), LSHIFT(Key_X), LSHIFT(Key_C), LSHIFT(Key_V), LSHIFT(Key_B), Key_LeftAlt,
+   Key_LeftControl, Key_Space, Key_LeftGui, ___,
+   ShiftToLayer(FUNCTION),
+
+   LSHIFT(Key_2),  LSHIFT(Key_RightBracket), LSHIFT(Key_6), LSHIFT(Key_NonUsPound),    LSHIFT(Key_8),         LSHIFT(Key_9),         LockLayer(NUMPAD),
+   Key_Enter,     LSHIFT(Key_Y), LSHIFT(Key_U), LSHIFT(Key_I),     LSHIFT(Key_O),      LSHIFT(Key_P),         Key_Minus,
+                  LSHIFT(Key_H), LSHIFT(Key_J), LSHIFT(Key_K),     LSHIFT(Key_L),      LSHIFT(Key_Semicolon), LSHIFT(Key_Quote),
+   Key_RightAlt,  LSHIFT(Key_N), LSHIFT(Key_M), LSHIFT(Key_Comma), LSHIFT(Key_Period), LSHIFT(Key_Minus),   LSHIFT(Key_Slash),
+   Key_RightShift, Key_Backspace, Key_Spacebar, Key_RightControl,
+   ShiftToLayer(FUNCTION))
 	) // KEYMAPS(
 // *INDENT-ON*
 
